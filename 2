@@ -1,0 +1,78 @@
+#include <iostream>
+
+using namespace std;
+
+int factorial(int n);
+int permutation(int n, int r);
+int combination(int n, int r);
+
+int main(void)
+{
+	int ans, n, r;
+	cout << "n = ";
+	cin >> n;
+	if (n <= 0)
+	{
+		do
+		{
+			cout << "The value you entered is not allowed. Please re-enter: ";
+	        cin >> n;
+		}
+		while (n <= 0);
+	}
+	cout << "r = ";
+	cin >> r;
+	if (r < 0 || r > n)
+	{
+		do
+	    {
+			cout << "The value you entered is not allowed. Please re-enter: ";
+	        cin >> r;
+		}
+		while (r < 0 || r > n);
+	}
+	cout << endl << "Press 1 for permutation; press 2 for combination and 3 for both:" << endl;
+	cin >> ans;
+	if (ans != 1 && ans != 2 && ans != 3)
+	{
+		do
+		{
+			cout << "The value you entered is not allowed. Please re-enter: " << endl;
+			cin >> ans;
+		}
+		while (ans != 1 && ans != 2 && ans != 3);
+	}
+	switch (ans)
+	{
+		case 1:
+			cout << endl << n << "P" << r << " = " << permutation(n, r) << endl;
+			break;
+		case 2:
+			cout << endl << n << "C" << r << " = " << combination(n, r) << endl;
+			break;
+		case 3:
+			cout << endl << n << "P" << r << " = " << permutation(n, r) << endl;
+			cout << n << "C" << r << " = " << combination(n, r) << endl;
+			break;
+	}
+	return 0;
+}
+
+int factorial(int n)
+{
+	if (n == 0)
+	    return 1;
+	else
+	    return n * factorial(n - 1);
+}
+
+int permutation(int n, int r)
+{
+	return factorial(n) / factorial(n - r);
+}
+
+int combination(int n, int r)
+{
+	int perm = factorial(n) / factorial(n - r);
+	return perm / factorial(r);
+}
