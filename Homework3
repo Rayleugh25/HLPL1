@@ -1,0 +1,72 @@
+#include "std_lib_facilities.h"
+//Error Defining
+class Invalid_Choice{};
+class Invalid_Input{};
+//Function Defining
+int Factorial(int);
+void Permutation(int, int);
+void Combinations(int, int);
+void PermutationsAndCominations(int, int);
+
+int main()
+{
+    int Choice, a, b;
+    cout << "WELCOME TO THE CALCULATOR OF PERMUTATIONS AND COMBINATIONS!" << endl;
+    cout << "PRESS '1' FOR PERMUTATION!" << endl;
+    cout << "PRESS '2' FOR COMBINATION!" << endl;
+    cout << "PRESS '3' FOR BOTH PERMUTATIONS AND COMBINATIONS!" << endl;
+    //Check to see if Choice is Valid or Not
+    try{
+        cout << "ENTER YOUR CHOICE: ";
+        cin >> Choice;
+        if (Choice < 1 || Choice > 3){throw Invalid_Choice{};}}
+    catch (Invalid_Choice){
+        cout << "SORRY! YOUR CHOICE IS INVALID" << endl;
+        return 1;
+    }
+    //Check to see if the Value of 'A' is Non-Zero
+    try{
+    try{
+        cout << "INPUT VALUE OF 'A': ";
+        cin >> a;
+        if (a == 0){throw Invalid_Input{};}}
+    catch (Invalid_Input){
+        cout << "THE VALUE OF 'A' CAN'T BE ZERO!" << endl;
+        return 2;
+    }
+    cout << "INPUT VALUE OF 'B': ";
+    cin >> b;
+    if (a < b){throw Invalid_Input{};}
+    }catch (Invalid_Input){
+        cout << "THE VALUE OF 'A' CAN'T BE LESS THAN 'B'!" << endl;
+        return 3;
+    }
+
+    if (Choice == 1)      {Permutation(a, b);}
+    else if (Choice == 2) {Combinations(a, b);}
+    else                  {PermutationsAndCominations(a, b);}
+
+    else                  {Permutation(a,b); Combinations(a, b);}
+    return 0;
+}
+
+int Factorial(int x){
+    if (x<=1) {return 1;}
+    return x*Factorial(x-1);
+}
+void Permutation(int x, int y){
+    int Permutation;
+    Permutation = (Factorial(x) / Factorial(x - y));
+    cout << x << "P" << y << ": " << Permutation << endl;
+}
+void Combinations(int x, int y){
+    int Permutation, Combination;
+    Permutation = (Factorial(x) / Factorial(x - y));
+    Combination = Permutation / Factorial(y); 
+    cout << x << "C" << y << ": " << Combination << endl;
+}
+
+void PermutationsAndCominations(int x, int y){
+    Permutation(x, y);
+    Combinations(x, y);
+}
