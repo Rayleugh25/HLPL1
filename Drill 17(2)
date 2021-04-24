@@ -1,90 +1,71 @@
-#include "std_lib_facilities.h"
+#include <iostream>
+#include <stdexcept>
+#include <vector>
 
-void print_array(ostream& os, int* a, int n)
+using namespace std;
+
+ostream& print_array(ostream& os, int* a, int n)
 {
-	for (int i=0; i<n; ++i)
-		os << "a[" << i << "] = " << a[i] << endl;
+    for (int i = 0; i < n; ++i) os << a[i] << '\n';
+    return os;
 }
-
-void
-print_vector(ostream& os, vector<int>& v)
-{
-	for (size_t i=0; i<v.size(); ++i)
-		os << "v[" << i << "] = " << v[i] << endl;
-}
-
 
 int main()
-{
-	cout << "drill_17_2.cpp\n\n";
+try {
+    // Drill 2 - Pointers & Arrays
+    int x = 7;
+    int* p1 = &x;
 
-	int my_int=7;
-	int* p1 = &my_int;
+    cout << "pointer " << p1 << " points to " << *p1 << '\n';
 
-	cout << "p1=" << p1 << ", *p1=" << *p1 << endl;
+    int* p2 = new int[7];
 
-	int* ia = new int[7];
-	for (int i=0; i<7; ++i)
-		ia[i]=i+1;
-	int* p2=ia;
-	cout << "p2=" << p2 << ", *p2=" << *p2 << endl;
-	cout << "ia=" << ia << ", *ia=" << *ia << endl;
+    x = 1;
+    for (int i = 0; i < 7; ++i) {
+        p2[i] = x;
+        x *= 2;
+    }
 
-	int* p3 = p2;
-	p2=p1;
-	p1=p3;
-	cout << "p1=" << p1 << ", *p1=" << *p1 << endl;
-	cout << "p2=" << p2 << ", *p2=" << *p2 << endl;
+    cout << "address " << p2 << '\n';
 
-	delete[] ia;
-	cout << "DEBUG: deleted ia[]\n";
+    for (int j = 0; j < 7; ++j)
+        cout << p2[j] << '\t';
 
-	int* iaa = new int[10];
-	for (int i=0; i<10; ++i)
-		iaa[i]=(i+1)*2;
-	p1 = iaa;
+    cout << '\n';
 
-	int* ib = new int(10);
-	p2=ib;
+    int* p3 = p2;
+    p2 = p1;
+    p2 = p3;
 
-	cout << "iaa:\n";
-	print_array(cout, iaa, 10);
-	cout << "ib:\n";
-	print_array(cout, ib, 10);
+    cout << "pointer " << p1 << " points to " << *p1 << '\n';
+    cout << "pointer " << p2 << " points to " << *p2 << '\n';
 
-	for (int i=0; i<10; ++i)
-		*(p2+i)=*(p1+i);
-	cout << "ib after copying:\n";
-	print_array(cout, ib, 10);
+    delete[] p2;
 
-	delete[] iaa;
-	cout << "DEBUG: deleted iaa[]\n";
+    p1 = new int[10] {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
+    p2 = new int[10];
 
-	vector<int> v1(10);
-	for (size_t i=0; i<v1.size(); ++i)
-		v1[i]=(i+1)*2;
-	vector<int>* vp1 = &v1;
-	cout << "Vector v1:\n";
-	print_vector(cout, v1);
+    for (int m = 0; m < 10; ++m)
+        p2[m] = p1[m];
 
-	cout << "About to declare v2\n";
-	vector<int> v2(10);
-	cout << "declared v2\n";
-	for (size_t i=0; i<v2.size(); ++i)
-		v2[i]=i;
-	vector<int>* vp2 = &v2;
-	cout << "Vector v2:\n";
-	print_vector(cout, v2);
+    for (int k = 0; k < 10; ++k)
+        cout << p2[k] << '\t';
+    cout << '\n';
 
-	vp2 = vp1;
-    cout << "Copy and display values from v1 to v2\n";
-    for (int i = 0; i < vp1->size(); ++i) {
-        cout << (*vp1)[i] << endl;
-    
-		
-	}
+    // vectors
+    vector<int> v1 {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
+    vector<int> v2 (10);
+    v2 = v1;
 
-	print_vector(cout, *vp2);
+    for (int v : v2) cout << v << '\t';
 
-return 0;
+    cout << '\n';
+}
+catch(exception& e) {
+    cerr << "Exception: " << e.what() << '\n';
+    return 1;
+}
+catch(...) {
+    cerr << "Unknown exception\n";
+    return 2;
 }
