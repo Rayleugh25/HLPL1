@@ -1,68 +1,50 @@
-#include "std_lib_facilities.h"
+#include <iostream>
+#include <stdexcept>
+#include <vector>
 
-void print_array10(ostream& os, int* a)
+using namespace std;
+
+ostream& print_array(ostream& os, int* a, int n)
 {
-     for(int i=0; i<10; ++i)
-             os << "a[" << i << "] = ' << a[i] << endl;
+    for (int i = 0; i < n; ++i) os << a[i] << '\n';
+    return os;
 }
 
-void print_array(ostream& os, int* a, int n)
+ostream& print_vector(ostream& os, vector<int>& v)
 {
-     for(int i=0; i<n; ++i)
-             os << "a[" << i << "] = " << a[i] << endl;
-}
-
-void init_array(int *a, int n, int v)
-{
-     for(int i=0; i<n; ++i, ++v)
-             a[i]=v;
-}
-
-void init_vector(vector<int>& v, int val)
-{
-     for(size_t i=0; i<v.size(); ++i, ++val)
-               v[i]=val;
-}
-
-void print_vector(ostream& os, vector<int>& v)
-{
-     for(size_t i=0; i<v.size(); ++i)
-             os << "v[" << i << "] = " << v[i] << endl;
+    for (int vv : v) os << vv << '\n';
+    return os;
 }
 
 int main()
-{
-      cout << "Drill_17_1.cpp\n\n";
-      
-      int size=10;
-      int* ip = new int[size];
-      
-      for(int i=0; i<size; ++i) {
-              cout << "ip[" << i << "] = " << ip[i] << endl;
-              cout << "ip+" << i << " = " << ip+i << endl;
-      }
-      
-      cout << "ip = " << ip << endl;
-	for (int i=0; i<size; ++i)
-		ip[i]=i;
+try {
 
-	print_array10(cout, ip);
+    int* arr20 = new int[20];
 
-	delete[] ip;
+    int x = 100;
+    for (int i = 0; i < 20; ++i) {
+        arr20[i] = x;
+        ++x;
+    }
 
-	size=20;
-	int* ip2 = new int[size];
-	init_array(ip2, size, 100);
-	print_array(cout, ip2, size);
-	cout << "ip2 = " << ip2 << endl;
-	delete[] ip2;
-	vector<int> vec(10);
-	init_vector(vec, 0);
-	print_vector(cout, vec);
-	vector<int> vec2(20);
-	init_vector(vec2, 100);
-	print_vector(cout, vec2);
+    print_array(cout, arr20, 20);
+    delete[] arr20;
 
-return 0;
+    vector<int> v10(10);
+
+    int y = 100;
+    for (int& v : v10) {
+        v = y;
+        ++y;
+    }
+
+    print_vector(cout, v10);
 }
-      
+catch(exception& e) {
+    cerr << "Exception: " << e.what() << '\n';
+    return 1;
+}
+catch(...) {
+    cerr << "Unknown exception\n";
+    return 2;
+}
