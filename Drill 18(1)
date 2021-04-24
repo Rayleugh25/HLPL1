@@ -1,5 +1,7 @@
-#include "std_lib_facilities.h"
+#include <iostream>
+#include <stdexcept>
 
+// 1 Define a global int array
 int ga[10] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 };
 
 void f(int ai[], int n)
@@ -7,18 +9,18 @@ void f(int ai[], int n)
     int la[10] = { };
     for (int i = 0; i < n; ++i) la[i] = ai[i];
 
-    cout << "Local copy\n";
+    std::cout << "Local copy\n";
     for (const auto& a : la)
-        cout << a << ' ';
-    cout << '\n';
+        std::cout << a << ' ';
+    std::cout << '\n';
 
     int* p = new int[n];
     for (int i = 0; i < n; ++i) p[i] = ai[i];
 
-    cout << "Pointer to free store\n";
+    std::cout << "Pointer to free store\n";
     for (int i = 0; i < n; ++i)
-        cout << p[i] << ' ';
-    cout << '\n';
+        std::cout << p[i] << ' ';
+    std::cout << '\n';
 
     delete[] p;
 }
@@ -27,21 +29,22 @@ int fac(int n) { return n > 1 ? n*fac(n-1) : 1; }
 
 int main()
 try {
-    cout << "Binary array\n";
+    // code
+    std::cout << "Binary array\n";
     f(ga, 10);
 
     int aa[10] = {};
     for (int i = 0; i < 10; ++i)
         aa[i] = fac(i + 1);
 
-    cout << "Factorial array\n";
+    std::cout << "Factorial array\n";
     f(aa, 10);
 }
-catch(exception& e) {
-    cerr << "Exception: " << e.what() << '\n';
+catch(std::exception& e) {
+    std::cerr << "Exception: " << e.what() << '\n';
     return 1;
 }
 catch(...) {
-    cerr << "Unknown exception\n";
+    std::cerr << "Unknown exception\n";
     return 2;
 }
