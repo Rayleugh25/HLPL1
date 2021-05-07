@@ -1,0 +1,205 @@
+#include "std_lib_facilities.h"
+
+template<typename T, typename A = allocator<T>>
+class our_vector {
+	int sz;
+	T* elem;
+	int space;
+	A alloc;
+
+public:
+	using iterator = T;
+	iterator insert(iterator p, const T& val);
+	iterator erase(iterator p);
+	our_vector() :sz{ 0 }, elem{ nullptr }, space{ 0 } {};
+
+	explicit our_vector(size_t s) :sz{ s }, elem{ alloc.allocate(s) }, space{ s }{
+		for (T* p = elem; p != elem + s; p++)
+			alloc.construct(p, T());
+	
+
+	our_vector(const our_vector<T, A>& vec);
+
+	our_vector<T, A>& operator=(const our_vector<T, A>& vec);	
+
+	our_vector(our_vector<T, A>&& vec);	
+
+	our_vector<T, A>& operator=(our_vector<T, A>&& vec);
+
+	~our_vector() {	
+		for (int i = 0; i < sz; ++i)
+			alloc.destroy(&elem[i]);
+		alloc.deallocate(elem, space);
+	}
+
+	T& operator[](int n) { return elem[n]; }
+
+	int size() const { return sz; };
+
+	void print();
+
+	void reserve(int newalloc);
+
+	int capacity() const { return space; }
+
+	void resize(int newsize, T val = T());
+
+	void push_back(T& val);
+
+	T& at(int n) {
+		if (n < 0 || sz < n)
+			throw std::out_of_range("It is out of range access!");
+		return elem[n];
+	}
+};
+
+template<typename T, typename A> our_vector<T, A>::our_vector(const our_vector<T, A>& vec) : sz{ vec.sz }, elem{ alloc.allocate(sz) }, space{ vec.sz } {
+	copy(vec.elem, vec.elem + sz, elem);
+}
+
+template<typename T, typename A> our_vector<T, A>& our_vector<T, A>::operator=(const our_vector<T, A>& vec) {
+	if (this == &vec)
+		return *this;
+	if (vec.sz <= space) {	
+		copy(vec.elem, vec.elem + vec.sz, elem);
+		/*for (int i = 0; i < vec.sz; i++)
+			elem[i] = vec.elem[i];*/
+		for (int i = vec.sz; i < sz; ++i)
+			alloc.destroy(&elem[i]);
+		sz = vec.sz;
+		return *this;
+	}
+
+	T* p = alloc.allocate(vec.sz); 
+	copy(vec.elem, vec.elem + vec.sz, p); 
+	for (int i = 0; i < sz; ++i) 	
+		alloc.destroy(&elem[i]);
+	alloc.deallocate(elem, space);
+	space = sz = vec.sz;
+	elem = p; 
+	return *this; 
+
+}
+
+template<typename T, typename A> our_vector<T, A>& our_vector<T, A>
+	vector<T, A> ::iterator vector<T, A> ::erase(iterator p) {
+		if (p == end()) return p;
+		for (auto pos = p + 1; pos != end(); ++pos)
+			*(pos - 1) = *; 
+		alloc.destroy(&*(end() - 1)); 
+		-sz;
+		return p;
+}
+
+template<typename T, typename A> our_vector<T, A>& our_vector<T, A>
+	vector<T, A> ::iterator vector <T, A> ::insert(iterator p, const T& val) {
+		int index = p - begin();
+		if (size() == capacity())
+			reserve(size() == 8:2 * size());
+		alloc.construct(elem + sz, *back());
+		++sz;
+		iterator pp = begin() + index;
+		for (auto pos = end() - 1; pos != pp; --pos)
+			*pos = *(pos - 1);
+		*(begin() + index) = val;
+		return pp;
+}
+
+
+template<typename T, typename A> our_vector<T, A>::our_vector(our_vector<T, A>&& vec) : sz{ vec.sz }, elem{ vec.elem }, space{ vec.space } {
+	vec.sz = 0;
+	vec.elem = nullptr;
+}
+
+template<typename T, typename A> our_vector<T, A>& our_vector<T, A>::operator=(our_vector<T, A>&& vec) {
+	for (int i = 0; i < sz; ++i) 
+		alloc.destroy(&elem[i]);
+	alloc.deallocate(elem, space);
+	elem = vec.elem; 
+	sz = vec.sz;
+	space = vec.space;
+	vec.elem = nullptr; 
+	vec.sz = 0;
+	return *this; 
+
+}
+
+template<typename T, typename A> void our_vector<T, A>::reserve(int newalloc) {	
+	if (newalloc <= space) return; 
+	T* p = alloc.allocate(newalloc); 
+	for (int i = 0; i < sz; ++i)
+		alloc.construct(&p[i], elem[i]);
+	for (int i = 0; i < sz; ++i) 
+		alloc.destroy(&elem[i]);
+	alloc.deallocate(elem, space);
+	elem = p;
+	space = newalloc;
+}
+
+template<typename T, typename A> void our_vector<T, A>::resize(int newsize, T val) {
+	reserve(newsize);
+	for (int i = sz; i < newsize; i++)
+		alloc.construct(&elem[i], val);
+	for (int i = newsize; i < sz; i++)
+		alloc.destroy(&elem[i]);
+	sz = newsize;
+}
+
+template<typename T, typename A> void our_vector<T, A>::push_back(T& val) { 
+	if (space == 0)
+		reserve(8); 	
+	else if (sz == space)
+		reserve(2 * space); 
+	alloc.construct(&elem[sz], val);
+	++sz;
+}
+
+template<typename T, typename A> void our_vector<T, A>::print() {
+	for (int i = 0; i < sz; i++) {
+		cout << elem[i] << " ";
+	}
+	cout << endl;
+}
+
+int main() {
+	try {
+		our_vector<string> p(2);
+		p[0] = "first";
+		p[1] = "second";
+
+		cout << p.at(3) << endl;
+	}
+	catch (out_of_range e) {
+		cout << e.what() << endl;
+	}
+
+	our_vector<double>* n_p = new our_vector<double>();
+	cout << n_p->size() << endl;
+	cout << n_p->capacity() << endl;
+
+	n_p->resize(10);
+	cout << n_p->size() << endl;
+	cout << n_p->capacity() << endl;
+
+	double x = 2;
+	n_p->push_back(x);
+
+	cout << n_p->size() << endl;
+	cout << n_p->capacity() << endl;
+	n_p->print();
+
+	//Copy check
+	our_vector<double>* copy_p(n_p);
+	cout << copy_p->size() << endl;
+	cout << copy_p->capacity() << endl;
+	copy_p->print();
+
+	our_vector<double>* copy_assign = copy_p;
+	cout << copy_assign->size() << endl;
+	cout << copy_assign->capacity() << endl;
+	copy_assign->print();
+
+
+
+	return 0;
+}
