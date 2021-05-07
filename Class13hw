@@ -1,0 +1,83 @@
+#include "std_lib_facilities.h"
+
+struct Item {
+	Item() {
+		name = "";
+		iid = 0;
+		value = 0;
+	}
+	Item(std::string n, int i, double v)
+		: name{ n }, iid{ i }, value{ v } {}
+	std::string name;
+	int iid;
+	double value;
+};
+
+std::ifstream& operator>>(std::ifstream& ifs, Item& item) {
+	ifs >> item.name >> item.iid >> item.value;
+	if (!ifs) {
+		throw Item::Bad_Input{};
+	}
+	return ifs;
+}
+
+void print_item_vector(const std::vector<Item> v) {
+	for (const Item& item : v) {
+		std::cout << "name: " << item.name
+			<< "\tiid: " << item.iid
+			<< "\tvalue: " << item.value << '\n';
+	}
+	std::cout << '\n';
+}
+
+struct Cmp_name {
+	bool operator() (const Item& i1, const Item& i2) const {
+		return i1.name < i2.name;
+	}
+};
+
+struct Cmp_iid {
+	bool operator() (const Item& i1, const Item& i2) const {
+		return i1.iid < i2.iid;
+	}
+};
+
+struct Cmp_val_largest {
+	bool operator() (const Item& i1, const Item& i2) const {
+		return i1.value > i2.value;
+	}
+};
+
+void print() {
+	std::cout << "[Sorted by name]\n";
+	std::sort(inv.begin(), inv.end(), Cmp_name{});
+	print_item_vector(inv);
+
+	std::cout << "[Sorted by iid]\n";
+	std::sort(inv.begin(), inv.end(), Cmp_iid{});
+	print_item_vector(inv);
+
+	std::cout << "[Sorted by largest value]\n";
+	std::sort(inv.begin(), inv.end(), Cmp_val_largest{});
+	print_item_vector(inv);
+
+	std::cout << "[Add Item(\"horse shoe\", 99, 12.34) and Item(\"Canon 5400\", 9988, 499.95)]\n";
+	inv.push_back(Item("horse shoe", 99, 12.34));
+	inv.push_back(Item("Canon 5400", 9988, 499.95));
+	print_item_vector(inv);
+
+
+	std::cout << "[Remove Item(\"horse shoe\", 99, 12.34) and Item(\"Canon 5400\", 9988, 499.95)]\n";
+	inv.erase(std::find_if(inv.begin(), inv.end(),
+		[](const Item& it) { return it.name == "horse shoe"; }));
+	inv.erase(std::find_if(inv.begin(), inv.end(),
+		[](const Item& it) { return it.name == "Canon 5400"; }));
+	print_item_vector(inv);
+
+	std::cout << "[Remove Item with iid 17 and Item with iid 21]\n";
+	inv.erase(std::find_if(inv.begin(), inv.end(),
+		[](const Item& it) { return it.iid == 17; }));
+	inv.erase(std::find_if(inv.begin(), inv.end(),
+		[](const Item& it) { return it.iid == 21; }));
+	print_item_vector(inv);
+}
