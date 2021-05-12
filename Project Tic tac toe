@@ -1,12 +1,11 @@
 #include<iostream>
-#include<conio.h>
 #include<string>
 using namespace std;
 void BaseGame(void);
 void roundgame(int);
 void extras(void);
 
-void main(void)
+int main(void)
 {
 Menu:
 	cout << "\n\t\t\t       \" C++ TIC-TAC-TOE \"";
@@ -203,14 +202,14 @@ Menu:
 				system("cls");
 				goto Menu;
 			}
-			_getch();
+			
 		}
 		else
 		{
 			cout << "\n  INVALID Input!! Please Enter CORRECT OPTION: ";
 		}
 	} while (Mpress > 5);
-	_getch();
+	
 }
 
 void roundgame(int n)
@@ -273,7 +272,7 @@ void roundgame(int n)
 				cout << "\n Mark not available. Please select either \" X or O \" only: ";
 			}
 		}
-	} while (option != 'X' || option != 'x' || option != 'O' || option != 'o');
+	} while (option != 'X' && option != 'x' && option != 'O' && option != 'o');
 
 	for (int r = 1; r <= n; r++)
 	{
@@ -296,22 +295,11 @@ void roundgame(int n)
 					do
 					{
 						cin >> p;
-						if (p <= 25)
+						if (p <= 25 && pos[p - 1] == '-')
 						{
 							pos[p - 1] = p1;
 							slot[p - 1] = p1;
 							cout << "\n\n\t  __________________________________ \n\t |  " << pos[0] << "    |    " << pos[1] << "     |    " << pos[2] << "     |    " << pos[3] << "     |    " << pos[4] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[5] << "     |    " << pos[6] << "     |    " << pos[7] << "     |    " << pos[8] << "     |   " << pos[9] << "      | \n\t|------|------|------|------|------|\n\t |  " << pos[10] << "     |    " << pos[11] << "     |    " << pos[12] << "     |    " << pos[13] << "     |    " << pos[14] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[15] << "     |    " << pos[16] << "     |    " << pos[17] << "     |    " << pos[18] << "     |    " << pos[19] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[20] << "     |    " << pos[21] << "     |    " << pos[22] << "     |    " << pos[23] << "     |    " << pos[24] << "   | \n\t |______|______|______|______|______|\n";
-
-							// TOP HEADINGS AND STUF BRINGING BACK AFTER CLS
-							cout << "\n Press any key to continue to opponent's turn";
-							_getch();
-							system("cls");
-							cout << "\n\t\t\t       \" C++ TIC-TAC-TOE \"";
-							cout << "\n\t\t\t           \" ROUND " << r << " \" \t\t\t    Score:";
-							cout << "\n\t\t\t\t\t\t\t\t " << p1Name << " = " << p1score;
-							cout << "\n\t\t\t\t\t\t\t\t " << p2Name << " = " << p2score;
-							cout << "\n\n " << p1Name << " represents: " << p1;
-							cout << "\n " << p2Name << " represents: " << p2;
 
 							// UPDATING AVAILABLE SLOTS
 							if (slot[p - 1] == "X")
@@ -339,7 +327,6 @@ void roundgame(int n)
 					p1score = p1score + 1;
 					cout << "\n\n\n\n\n\n\t\t     \" " << p1Name << " WITH THE MARK \'" << p1 << "\' WINS ROUND " << r << "\"";
 					cout << "\n\n\n Press any key to start next Round.";
-					_getch();
 					break;
 				}
 
@@ -353,23 +340,13 @@ void roundgame(int n)
 					do
 					{
 						cin >> p;
-						if (p <= 25)
+						if (p <= 25 && pos[p - 1] == '-')
 						{
 							pos[p - 1] = p2;
 							slot[p - 1] = p2;
 							cout << "\n\n\t  __________________________________ \n\t |  " << pos[0] << "    |    " << pos[1] << "     |    " << pos[2] << "     |    " << pos[3] << "     |    " << pos[4] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[5] << "     |    " << pos[6] << "     |    " << pos[7] << "     |    " << pos[8] << "     |    " << pos[9] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[10] << "     |    " << pos[11] << "     |    " << pos[12] << "     |    " << pos[13] << "     |    " << pos[14] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[15] << "     |    " << pos[16] << "     |    " << pos[17] << "     |    " << pos[18] << "     |    " << pos[19] << "   | \n\t|------|------|------|------|------|\n\t |  " << pos[20] << "     |    " << pos[21] << "     |    " << pos[22] << "     |    " << pos[23] << "     |    " << pos[24] << "   | \n\t |______|______|______|______|______|\n";
 
-							// TOP HEADINGS AND STUF BRINGING BACK AFTER CLS
-							cout << "\n Press any key to continue to opponent's turn";
-							_getch();
-							system("cls");
-							cout << "\n\t\t\t       \" C++ TIC-TAC-TOE \"";
-							cout << "\n\t\t\t           \" ROUND " << r << " \" \t\t\t    Score:";
-							cout << "\n\t\t\t\t\t\t\t\t " << p1Name << " = " << p1score;
-							cout << "\n\t\t\t\t\t\t\t\t " << p2Name << " = " << p2score;
-							cout << "\n\n " << p1Name << " represents: " << p1;
-							cout << "\n " << p2Name << " represents: " << p2;
-
+			
 							// UPDATING AVAILABLE SLOTS
 							if (slot[p - 1] == "X")
 							{
@@ -396,16 +373,14 @@ void roundgame(int n)
 					p2score = p2score + 1;
 					cout << "\n\n\n\n\n\n\t\t     \" " << p2Name << " WITH THE MARK \'" << p2 << "\' WINS ROUND " << r << "\"";
 					cout << "\n\n\n Press any key to start next Round.";
-					_getch();
 					break;
 				}
 				// CONDITION IF GAME DRAWS
-				else if (c == 10)
+				else if (c == 25)
 				{
 					cout << "\n\n\n\n\n\n\n\t\t\t\t \" ROUND " << r << " DRAWS \"";
 					cout << "\n\t\t\t \" BOTH PLAYERS WERE OUTSTANDING \"";
 					cout << "\n\n\n Press any key to start next Round.";
-					_getch();
 				}
 			}
 		}
@@ -550,7 +525,7 @@ void BaseGame(void)
 				cout << "\n Mark not available. Please select either \" X or O \" only: ";
 			}
 		}
-	} while (option != 'X' || option != 'x' || option != 'O' || option != 'o');
+	} while (option != 'X' && option != 'x' && option != 'O' && option != 'o');
 
 	system("color 2F");
 	// BASE GAME WORKING
@@ -565,19 +540,13 @@ void BaseGame(void)
 				do
 				{
 					cin >> p;
-					if (p <= 25)
+					if (p <= 25 && pos[p - 1] == '-')
 					{
 						pos[p - 1] = p1;
 						slot[p - 1] = p1;
 						cout << "\n\n\t  __________________________________ \n\t |  " << pos[0] << "   |  " << pos[1] << "   |  " << pos[2] << "   |  " << pos[3] << "   |  " << pos[4] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[5] << "   |  " << pos[6] << "   |  " << pos[7] << "   |  " << pos[8] << "   |  " << pos[9] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[10] << "   |  " << pos[11] << "   |  " << pos[12] << "   |  " << pos[13] << "   |  " << pos[14] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[15] << "   |  " << pos[16] << "   |  " << pos[17] << "   |  " << pos[18] << "   |  " << pos[19] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[20] << "   |  " << pos[21] << "   |  " << pos[22] << "   |  " << pos[23] << "   |  " << pos[24] << "   | \n\t |______|______|______|______|______|\n";
 
-						// TOP HEADINGS AND STUF BRINGING BACK AFTER CLS
-						cout << "\n Press any key to continue to opponent's turn";
-						_getch();
-						system("cls");
-						cout << "\n\t\t\t       \" C++ TIC-TAC-TOE \"";
-						cout << "\n\n " << p1Name << " represents: " << p1;
-						cout << "\n " << p2Name << " represents: " << p2;
+					
 
 						// UPDATING AVAILABLE SLOTS
 						if (slot[p - 1] == "X")
@@ -630,19 +599,12 @@ void BaseGame(void)
 				do
 				{
 					cin >> p;
-					if (p <= 9)
+					if (p <= 25 && pos[p - 1] == '-')
 					{
 						pos[p - 1] = p2;
 						slot[p - 1] = p2;
 						cout << "\n\n\t  __________________________________ \n\t |  " << pos[0] << "   |  " << pos[1] << "   |  " << pos[2] << "   |  " << pos[3] << "   |  " << pos[4] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[5] << "   |  " << pos[6] << "   |  " << pos[7] << "   |  " << pos[8] << "   |  " << pos[9] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[10] << "   |  " << pos[11] << "   |  " << pos[12] << "   |  " << pos[13] << "   |  " << pos[14] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[15] << "   |  " << pos[16] << "   |  " << pos[17] << "   |  " << pos[18] << "   |  " << pos[19] << "   | \n\t |------|------|------|------|------| \n\t |  " << pos[20] << "   |  " << pos[21] << "   |  " << pos[22] << "   |  " << pos[23] << "   |  " << pos[24] << "   | \n\t |______|______|______|______|______| \n";
 
-						// TOP HEADINGS AND STUF BRINGING BACK AFTER CLS
-						cout << "\n Press any key to continue to opponent's turn";
-						_getch();
-						system("cls");
-						cout << "\n\t\t\t       \" C++ TIC-TAC-TOE \"";
-						cout << "\n\n " << p1Name << " represents: " << p1;
-						cout << "\n " << p2Name << " represents: " << p2;
 
 						// UPDATING AVAILABLE SLOTS
 						if (slot[p - 1] == "X")
@@ -685,7 +647,7 @@ void BaseGame(void)
 				break;
 			}
 			// CONDITION IF GAME DRAWS
-			else if (c == 10)
+			else if (c == 25)
 			{
 				cout << "\n\n\n\n\n\n\n\t\t\t\t \" GAME DRAWS \"";
 				cout << "\n\t\t\t \" BOTH PLAYERS WERE OUTSTANDING \"";
